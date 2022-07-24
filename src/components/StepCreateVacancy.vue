@@ -162,6 +162,10 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+//const api = process.env.VUE_API_SERVER;
+//console.log('api: ', api)
+
 export default {
   props: ["index"],
   data() {
@@ -198,19 +202,46 @@ export default {
       }
     },
     submitForm() {
-      const vacancy = {
-        index: this.index,
-        name: this.nameVacancy,
-        priorities: this.priorities,
-        criteries: this.criteries,
-        grade3: this.grade3,
-        grade4: this.grade4,
-        relevant: this.relevant,
-        personnelReserve: this.personnelReserve,
-        leastSuitable: this.leastSuitable,
-      };
-      console.log("vacancy: ", vacancy);
-      this.$store.commit("setVacancy", vacancy);
+      // const vacancy = {
+      //     index: this.index,
+      //     name: this.nameVacancy,
+      //     priorities: this.priorities,
+      //     criteries: this.criteries,
+      //     grade3: this.grade3,
+      //     grade4: this.grade4,
+      //     relevant: this.relevant,
+      //     personnelReserve: this.personnelReserve,
+      //     leastSuitable: this.leastSuitable,
+      // };
+
+      axios.post(`http://localhost:8000/api/create-vacancy`, {
+        COMPANY_ID: this.index,
+        COMPANY_NAME: this.$store.state.currentCompany.name,
+        VACANCY_NAME: this.nameVacancy,
+
+        IMPORTANT_SKILL_1: this.priorities[0],
+        IMPORTANT_SKILL_2: this.priorities[1],
+        IMPORTANT_SKILL_3: this.priorities[2],
+        MINOR_SKILL_1: this.priorities[3],
+        MINOR_SKILL_2: this.priorities[4],
+
+        NEED_PROFESSIONALISM_SKILL: this.grade3,
+        NEED_EXPERIENCE_SKILL: this.grade4,
+
+        ADDITIONAL_SKILL_1: this.criteries[0],
+        ADDITIONAL_SKILL_2: this.criteries[1],
+        ADDITIONAL_SKILL_3: this.criteries[2],
+        ADDITIONAL_SUPER_SKILL: this.criteries[3],
+        ADDITIONAL_TEST_SKILL_1: this.criteries[4],
+        ADDITIONAL_TEST_SKILL_2: this.criteries[5],
+
+        BEST_CANDIDATES_RESPONSE: this.relevant,
+        RESERVE_CANDIDATES_RESPONSE: this.personnelReserve,
+        WEAK_CANDIDATES_RESPONSE: this.leastSuitable,
+      });
+
+      // console.log('vacancy: ', vacancy);
+      // this.$store.commit('setVacancy', vacancy);
       this.$emit("close");
     },
   },

@@ -13,7 +13,9 @@ export default new Vuex.Store({
       email: null,
       firstPage: true,
       showWelcome: true,
+      dev: false,
       companies: [],
+      currentCompany: {},
     };
   },
   mutations: {
@@ -33,6 +35,12 @@ export default new Vuex.Store({
     setVacancy(state, vacancy) {
       console.log("vacancy: ", vacancy);
       state.companies[vacancy.index].vacancy.push(vacancy);
+    },
+    setDev(state, bool) {
+      state.dev = bool;
+    },
+    setCurrentCompany(state, company) {
+      state.currentCompany = company;
     },
   },
   actions: {},

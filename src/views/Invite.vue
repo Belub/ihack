@@ -18,33 +18,10 @@
         <v-container class="d-flex flex-column">
           <h2>{{ company.name }}</h2>
           <h4>{{ company.description }}</h4>
-          <v-card-actions class="d-flex flex-column align-baseline">
-            <v-btn
-              v-if="$store.state.role === 'hr'"
-              outlined
-              rounded
-              text
-              @click="generateLink($route.params.id)"
-            >
-              Generate link
-            </v-btn>
-            <br />
-            {{ candidateLink }}
-          </v-card-actions>
         </v-container>
       </v-card>
       <h2 class="ma-3 mb-1">Vacancies</h2>
-      <v-card-actions>
-        <v-btn
-          v-if="$store.state.role === 'hr'"
-          outlined
-          rounded
-          text
-          @click="createVacancy()"
-        >
-          Create new vacancy
-        </v-btn>
-      </v-card-actions>
+      <v-card-actions> </v-card-actions>
       <v-container v-if="!createNewWindow" class="d-flex ml-0">
         <v-card
           v-for="(vacancy, index) in vacancies"
@@ -64,32 +41,8 @@
           </v-list-item>
 
           <v-card-actions>
-            <v-btn
-              v-if="$store.state.role !== 'hr'"
-              outlined
-              rounded
-              text
-              @click="startTest($route.params.id)"
-            >
+            <v-btn outlined rounded text @click="startTest(vacancy.ID)">
               Start Test
-            </v-btn>
-            <v-btn
-              v-if="$store.state.role === 'hr'"
-              outlined
-              rounded
-              text
-              @click="overview($route.params.id)"
-            >
-              Overview
-            </v-btn>
-            <v-btn
-              v-if="$store.state.role === 'hr'"
-              outlined
-              rounded
-              text
-              @click="edit($route.params.id)"
-            >
-              Edit
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -177,6 +130,7 @@ export default {
       this.candidateLink = link;
     },
     startTest(index) {
+      console.log("index: ", index);
       this.$router.push(`/test/${index}`);
     },
   },

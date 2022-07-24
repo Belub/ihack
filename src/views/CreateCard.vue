@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-container v-if="!createNewWindow" class="pt-10">
-      <v-btn outlined rounded text @click="createNewCompany">
+      <v-btn
+        v-if="$store.state.role === 'hr'"
+        outlined
+        rounded
+        text
+        @click="createNewCompany"
+      >
         Create new Company
       </v-btn>
     </v-container>
@@ -36,19 +42,21 @@
     </v-container>
     <v-container v-if="!createNewWindow" d-flex flex-row flex-wrap>
       <v-card
-        v-for="(company, index) in $store.state.companies"
-        :key="index"
+        v-for="(company, index) in companies"
+        :key="company.ID"
         class="mb-10 mr-10"
         max-width="344"
         outlined
+        style="width: 300px"
       >
+        <!--after in $store.state.companies-->
         <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-title class="text-h5 mb-1">
-              {{ company.name }}
+              {{ company.COMPANY_NAME }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ company.description }}
+              {{ company.COMPANY_DESCRIPTION }}
             </v-list-item-subtitle>
           </v-list-item-content>
 
@@ -67,15 +75,36 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     createNewWindow: false,
     description: null,
     name: null,
     link: null,
+    companies: [],
   }),
+  mounted() {
+    this.getCompanies();
+  },
+  updated() {
+    // axios.get('http://localhost:8000/api/show-companies').then((r) => {
+    //     const res = r.data[0];
+    //     console.log('res: ', res);
+    //     this.companies = [res];
+    // });
+  },
   methods: {
+    getCompanies() {
+      axios.get("http://localhost:8000/api/show-companies").then((r) => {
+        const res = r.data;
+        console.log("res: ", res);
+        this.companies = res;
+      });
+    },
     createNewCompany() {
+      console.log("createNewCompany");
       this.$emit("craete"); //hide upper blocks
       this.createNewWindow = !this.createNewWindow;
     },
@@ -87,14 +116,29 @@ export default {
         description: this.description,
         vacancy: [],
       });
+
+      axios
+        .post("http://127.0.0.1:8000/api/create-company", {
+          COMPANY_NAME: this.name,
+          YOUTUBE_VIDEO: this.link,
+          COMPANY_DESCRIPTION: this.description,
+        })
+        .catch(console.log);
+      this.getCompanies();
+
       this.name = null;
       this.description = null;
       this.link = null;
-
       this.createNewWindow = !this.createNewWindow;
     },
     overview(index) {
       console.log("index: ", index);
+      console.log("comp: ", this.companies);
+      this.$store.commit("setCurrentCompany", {
+        name: this.companies[index].COMPANY_NAME,
+        link: this.companies[index].YOUTUBE_VIDEO,
+        description: this.companies[index].COMPANY_DESCRIPTION,
+      });
       this.$router.push(`/dashboard/company/${index}`);
     },
   },

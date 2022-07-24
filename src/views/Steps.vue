@@ -78,6 +78,12 @@ export default {
     email: "",
     step: 1,
   }),
+  mounted() {
+    // console.log('this.$route.params.id: ', this.$route.params.id);
+    // console.log('this.$route.params.id: ', this.$route.params.id > -1);
+    // if (this.$route.params.id > -1) {
+    // }
+  },
   computed: {
     currentTitle() {
       switch (this.step) {

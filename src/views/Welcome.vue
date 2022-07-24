@@ -1,18 +1,11 @@
 <template>
   <v-app>
-    <div v-if="$store.state.showWelcome">
+    <div v-if="showWelcome">
       <transition name="slide-fade">
-        <Welcome
-          v-if="$store.state.firstPage"
-          @first="$store.state.firstPage = false"
-        />
+        <Welcome v-if="firstPage" @first="firstPage = false" />
       </transition>
       <transition name="slide-fade">
-        <Steps
-          v-if="!$store.state.firstPage"
-          @first="$store.state.firstPage = true"
-          @hides="$store.state.showWelcome = false"
-        />
+        <Steps v-if="!firstPage" />
       </transition>
     </div>
   </v-app>
@@ -23,6 +16,12 @@ import Steps from "./Steps.vue";
 import Welcome from "../components/Welcome2.vue";
 
 export default {
+  data() {
+    return {
+      firstPage: true,
+      showWelcome: true,
+    };
+  },
   name: "App",
   components: {
     Welcome,

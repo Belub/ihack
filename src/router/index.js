@@ -5,6 +5,9 @@ import Dashboard from "../views/Dashboard.vue";
 import CreateCard from "../views/CreateCard.vue";
 import OverviewCompany from "../views/OverviewCompany.vue";
 import Vacancy from "../views/Vacancy.vue";
+import QuizCandidate from "../views/QuizCandidate.vue";
+import Steps from "../views/Steps.vue";
+import Invite from "../views/Invite.vue";
 
 Vue.use(VueRouter);
 
@@ -14,6 +17,20 @@ const routes = [
     name: "Welcome",
     component: Welcome,
     meta: { transition: "slide-left" },
+  },
+  {
+    path: "/quize/candidate/:id",
+    name: "Empty",
+    component: Steps,
+  },
+  {
+    path: "/invite/:id",
+    name: "Invite",
+    component: Invite,
+  },
+  {
+    path: "/test/:id",
+    component: QuizCandidate,
   },
   // route level code-splitting
   // this generates a separate chunk (about.[hash].js) for this route
@@ -34,6 +51,10 @@ const routes = [
       },
       {
         path: "company/:id",
+        component: OverviewCompany,
+      },
+      {
+        path: "company/:id/:id2",
         component: OverviewCompany,
       },
       {
